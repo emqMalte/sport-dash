@@ -33,6 +33,12 @@ const teamMappings = {
   "San Francisco Giants": "SF",
 };
 
+const showScoreDetailedStates: DetailedState[] = [
+  "In Progress",
+  "Game Over",
+  "Final",
+];
+
 const TeamScore = ({
   team,
   detailedState,
@@ -47,12 +53,12 @@ const TeamScore = ({
         alt={team.team.name}
         className="h-8 w-8"
       />
-      {detailedState !== "In Progress" ? (
+      {showScoreDetailedStates.includes(detailedState) ? (
+        <span className="font-bold">{team.score}</span>
+      ) : (
         <span className="">
           {team.leagueRecord.wins} - {team.leagueRecord.losses}
         </span>
-      ) : (
-        <span className="font-bold">{team.score}</span>
       )}
     </div>
   );

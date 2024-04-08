@@ -86,7 +86,9 @@ export type DetailedState =
   | "Scheduled"
   | "Postponed"
   | "Warmup"
-  | "In Progress";
+  | "In Progress"
+  | "Game Over"
+  | "Final";
 
 export type StatusCode = "P" | "S" | "DI" | "PW" | "I";
 
