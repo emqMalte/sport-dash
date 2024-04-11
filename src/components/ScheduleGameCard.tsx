@@ -87,7 +87,13 @@ const Bases = ({ linescore }: { linescore: Linescore }) => {
 
   for (let i = 0; i < 3; i++) {
     if (linescore?.outs && i < linescore.outs) {
-      outs.push(<FontAwesomeIcon key={i} icon={faCircleSolid} />);
+      outs.push(
+        <FontAwesomeIcon
+          key={i}
+          icon={faCircleSolid}
+          className="text-red-800"
+        />,
+      );
       continue;
     }
     outs.push(<FontAwesomeIcon key={i} icon={faCircle} />);
@@ -145,8 +151,11 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
       <div className="text-center">
         {showScore ? (
           <span>
-            {game.linescore.inningState} of the{" "}
-            {game.linescore.currentInningOrdinal}
+            <span className="font-semibold">{game.linescore.inningState}</span>{" "}
+            of the{" "}
+            <span className="font-semibold">
+              {game.linescore.currentInningOrdinal}
+            </span>
           </span>
         ) : (
           <>
