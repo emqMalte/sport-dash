@@ -103,13 +103,13 @@ const Bases = ({ linescore }: { linescore: Linescore }) => {
     <div className="col-span-3 row-span-2 ">
       <div className="relative m-3 mx-auto h-16 w-24">
         <div
-          className={`mx-auto h-8 w-8 rotate-45 border-2 border-black ${linescore.offense.second && "bg-orange-700"}`}
+          className={`mx-auto h-8 w-8 rotate-45 border-2 border-black transition-colors ${linescore.offense.second && "bg-orange-700"}`}
         ></div>
         <div
-          className={`absolute bottom-0 left-0 inline-block h-8 w-8 rotate-45 border-2 border-black ${linescore.offense.third && "bg-orange-700"} `}
+          className={`absolute bottom-0 left-0 inline-block h-8 w-8 rotate-45 border-2 border-black transition-colors ${linescore.offense.third && "bg-orange-700"} `}
         ></div>
         <div
-          className={`absolute bottom-0 right-0 inline-block h-8 w-8 rotate-45 border-2 border-black ${linescore.offense.first && "bg-orange-700"}`}
+          className={`absolute bottom-0 right-0 inline-block h-8 w-8 rotate-45 border-2 border-black transition-colors ${linescore.offense.first && "bg-orange-700"}`}
         ></div>
         <div className="absolute -bottom-2 right-1/2 flex translate-x-1/2 gap-1 text-xs">
           {outs}
