@@ -27,6 +27,7 @@ export type Game = {
   officialDate: Date;
   status: Status;
   teams: Teams;
+  linescore: Linescore;
   venue: Venue;
   content: Content;
   gameNumber: number;
@@ -115,4 +116,76 @@ export type Venue = {
   id: number;
   name: string;
   link: string;
+};
+
+export type InningHalfEnum = "Top" | "Bottom" | "Middle";
+
+export type InningAway = {
+  runs?: number;
+  hits?: number;
+  errors?: number;
+  leftOnBase?: number;
+};
+
+export type Inning = {
+  num: number;
+  ordinalNum: string;
+  home: InningAway;
+  away: InningAway;
+};
+
+export type LinescoreTeams = {
+  home: InningAway;
+  away: InningAway;
+};
+
+export type Linescore = {
+  currentInning?: number;
+  currentInningOrdinal?: string;
+  inningState?: InningHalfEnum;
+  inningHalf?: InningHalfEnum;
+  isTopInning?: boolean;
+  scheduledInnings: number;
+  innings: Inning[];
+  teams: LinescoreTeams;
+  defense: Defense;
+  offense: Offense;
+  balls?: number;
+  strikes?: number;
+  outs?: number;
+};
+
+export type Batter = {
+  id: number;
+  fullName: string;
+  link: string;
+};
+
+export type Defense = {
+  pitcher?: Batter;
+  catcher?: Batter;
+  first?: Batter;
+  second?: Batter;
+  third?: Batter;
+  shortstop?: Batter;
+  left?: Batter;
+  center?: Batter;
+  right?: Batter;
+  batter?: Batter;
+  onDeck?: Batter;
+  inHole?: Batter;
+  battingOrder?: number;
+  team: Venue;
+};
+
+export type Offense = {
+  batter?: Batter;
+  onDeck?: Batter;
+  inHole?: Batter;
+  pitcher?: Batter;
+  battingOrder?: number;
+  team: Venue;
+  first?: Batter;
+  second?: Batter;
+  third?: Batter;
 };

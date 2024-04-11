@@ -6,9 +6,9 @@ export const Schedule = () => {
   const { isPending, error, data } = useQuery<MlbSchedule>({
     queryKey: ["schedule"],
     queryFn: () =>
-      fetch("https://statsapi.mlb.com/api/v1/schedule?sportId=1").then((res) =>
-        res.json(),
-      ),
+      fetch(
+        "https://statsapi.mlb.com/api/v1/schedule?sportId=1&hydrate=linescore",
+      ).then((res) => res.json()),
     staleTime: 1000 * 60,
     refetchInterval: 1000 * 60,
     refetchIntervalInBackground: false,
