@@ -131,6 +131,7 @@ interface ScheduleGameCardProps {
 export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
   const showScore = showScoreDetailedStates.includes(game.status.detailedState);
   const showBases = game.status.detailedState === "In Progress";
+  const showPreGameStatus = !showScore;
   const outs = [];
 
   for (let i = 0; i < 3; i++) {
@@ -146,10 +147,10 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
       className={`m-2 rounded border px-4 py-2 drop-shadow ${game.status.detailedState !== "In Progress" ? "bg-slate-200 grayscale" : ""}`}
     >
       <h2 className="text-lg font-bold">
-        {game.teams.away.team.name} @ {game.teams.home.team.name}{" "}
+        {game.teams.away.team.name} @ {game.teams.home.team.name}
       </h2>
       <div className="text-center">
-        {showScore ? (
+        {showBases ? (
           <span>
             <span className="font-semibold">{game.linescore.inningState}</span>{" "}
             of the{" "}
@@ -157,6 +158,8 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
               {game.linescore.currentInningOrdinal}
             </span>
           </span>
+        ) : showScore ? (
+          <span className="font-semibold">{game.status.detailedState}</span>
         ) : (
           <>
             <span className="font-semibold">Time:</span>{" "}
@@ -178,12 +181,15 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
 
         {showBases && <Bases linescore={game.linescore} />}
       </div>
-      <div className="flex justify-center gap-2">
-        <div>
-          <span className="font-semibold">Status:</span>{" "}
-          {game.status.detailedState}
+
+      {showPreGameStatus && (
+        <div className="flex justify-center gap-2">
+          <div>
+            <span className="font-semibold">Status:</span>{" "}
+            {game.status.detailedState}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
