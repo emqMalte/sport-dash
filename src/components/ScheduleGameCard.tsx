@@ -68,7 +68,7 @@ const TeamScore = ({
         <span className="ml-2 font-semibold">{teamShortName}</span>
       </div>
       {showLeagueRecord && (
-        <span className={twMerge("text-end", !showScore && "col-span-2")}>
+        <span className={twMerge("text-end", !showScore ? "col-span-2" : "")}>
           {team.leagueRecord.wins} - {team.leagueRecord.losses}
         </span>
       )}
@@ -76,7 +76,7 @@ const TeamScore = ({
         <span
           className={twMerge(
             "text-end font-bold",
-            !showLeagueRecord && "col-span-2",
+            !showLeagueRecord ? "col-span-2" : "",
           )}
         >
           {team.score}
