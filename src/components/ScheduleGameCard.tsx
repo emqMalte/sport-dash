@@ -54,14 +54,11 @@ const TeamScore = ({
 }) => {
   const teamShortName =
     teamMappings[team.team.name as keyof typeof teamMappings];
+  const showLeagueRecord = detailedState !== "In Progress";
+  const showScore = showScoreDetailedStates.includes(detailedState);
 
   return (
-    <div
-      className={twMerge(
-        "col-span-3 flex flex-row items-center justify-between text-lg",
-        className,
-      )}
-    >
+    <div className={twMerge("grid grid-cols-3 text-lg", className)}>
       <div className="flex">
         <img
           src={`/mlb/light/${teamShortName.toLowerCase()}_l.svg`}
@@ -70,13 +67,20 @@ const TeamScore = ({
         />
         <span className="ml-2 font-semibold">{teamShortName}</span>
       </div>
-      {detailedState !== "In Progress" && (
-        <span>
+      {showLeagueRecord && (
+        <span className={twMerge("text-end", !showScore && "col-span-2")}>
           {team.leagueRecord.wins} - {team.leagueRecord.losses}
         </span>
       )}
-      {showScoreDetailedStates.includes(detailedState) && (
-        <span className="font-bold">{team.score}</span>
+      {showScore && (
+        <span
+          className={twMerge(
+            "text-end font-bold",
+            !showLeagueRecord && "col-span-2",
+          )}
+        >
+          {team.score}
+        </span>
       )}
     </div>
   );
