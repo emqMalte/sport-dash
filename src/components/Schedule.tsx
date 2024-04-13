@@ -7,7 +7,6 @@ import {
 import { ScheduleGameCard } from "./ScheduleGameCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
 import { isDelayed, isFinal, isInProgress } from "../utils/gameState";
 
 const Loading = () => (
@@ -50,29 +49,19 @@ const ScheduleDateSection = ({
 };
 
 const ScheduleDate = ({ date }: { date: DateElement }) => {
-  const [scheduledGames, setScheduledGames] = useState<Game[]>([]);
-  const [activeGames, setActiveGames] = useState<Game[]>([]);
-  const [completedGames, setCompletedGames] = useState<Game[]>([]);
+  const scheduledGames: Game[] = [];
+  const activeGames: Game[] = [];
+  const completedGames: Game[] = [];
 
-  useEffect(() => {
-    const scheduledGames: Game[] = [];
-    const activeGames: Game[] = [];
-    const completedGames: Game[] = [];
-
-    date.games.forEach((game) => {
-      if (isFinal(game) || isDelayed(game)) {
-        completedGames.push(game);
-      } else if (isInProgress(game)) {
-        activeGames.push(game);
-      } else {
-        scheduledGames.push(game);
-      }
-    });
-
-    setScheduledGames(scheduledGames);
-    setActiveGames(activeGames);
-    setCompletedGames(completedGames);
-  }, [date.games]);
+  date.games.forEach((game) => {
+    if (isFinal(game) || isDelayed(game)) {
+      completedGames.push(game);
+    } else if (isInProgress(game)) {
+      activeGames.push(game);
+    } else {
+      scheduledGames.push(game);
+    }
+  });
 
   return (
     <div key={date.date.toString()}>
