@@ -1,8 +1,16 @@
 import { twMerge } from "tailwind-merge";
-import { Away, DetailedState, Game, Linescore } from "../types/mlb/Schedule";
+import { Away, Game, Linescore } from "../types/mlb/Schedule";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle as faCircleSolid } from "@fortawesome/free-solid-svg-icons";
 import { faCircle } from "@fortawesome/free-regular-svg-icons";
+import {
+  isDelayed,
+  isFinal,
+  isInProgress,
+  isPregame,
+  showScores,
+} from "../utils/gameState";
+import { cva } from "class-variance-authority";
 
 const teamMappings = {
   "Baltimore Orioles": "BAL",
@@ -37,25 +45,20 @@ const teamMappings = {
   "San Francisco Giants": "SF",
 };
 
-const showScoreDetailedStates: DetailedState[] = [
-  "In Progress",
-  "Game Over",
-  "Final",
-];
-
 const TeamScoreLine = ({
   team,
-  detailedState,
   className,
+  game,
 }: {
   team: Away;
-  detailedState: DetailedState;
+  game: Game;
+
   className?: string;
 }) => {
   const teamShortName =
     teamMappings[team.team.name as keyof typeof teamMappings];
-  const showLeagueRecord = detailedState !== "In Progress";
-  const showScore = showScoreDetailedStates.includes(detailedState);
+  const showLeagueRecord = !isInProgress(game);
+  const showScore = isInProgress(game) || isFinal(game);
 
   return (
     <div className={twMerge("grid grid-cols-3 text-lg", className)}>
@@ -123,13 +126,30 @@ const Bases = ({ linescore }: { linescore: Linescore }) => {
   );
 };
 
+const scheduleGameCardVariant = cva(
+  ["m-2 rounded border border-t-4 px-4 py-2 drop-shadow"],
+  {
+    variants: {
+      gameState: {
+        default: ["bordert-t-slate-800"],
+        pregame: ["border-t-blue-700", "bg-slate-50", "grayscale"],
+        inProgress: ["border-t-green-700"],
+        delayed: ["border-t-red-900", "bg-slate-300"],
+        final: ["border-t-slate-800", "bg-slate-100"],
+      },
+    },
+    defaultVariants: {
+      gameState: "default",
+    },
+  },
+);
+
 interface ScheduleGameCardProps {
   game: Game;
 }
 export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
-  const showScore = showScoreDetailedStates.includes(game.status.detailedState);
-  const showBases = game.status.detailedState === "In Progress";
-  const showPreGameStatus = !showScore;
+  const showScore = showScores(game);
+  const showBases = isInProgress(game);
   const outs = [];
 
   for (let i = 0; i < 3; i++) {
@@ -140,10 +160,20 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
     outs.push(<FontAwesomeIcon key={i} icon={faCircle} />);
   }
 
+  const gameState = isFinal(game)
+    ? "final"
+    : isInProgress(game)
+      ? "inProgress"
+      : isDelayed(game)
+        ? "delayed"
+        : isPregame(game)
+          ? "pregame"
+          : "default";
+
+  const classes = twMerge(scheduleGameCardVariant({ gameState: gameState }));
+
   return (
-    <div
-      className={`m-2 rounded border px-4 py-2 drop-shadow ${game.status.detailedState !== "In Progress" ? "bg-slate-200 grayscale" : ""}`}
-    >
+    <div className={classes}>
       <h2 className="text-lg font-bold">
         {game.teams.away.team.name} @ {game.teams.home.team.name}
       </h2>
@@ -160,34 +190,33 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
           <span className="font-semibold">{game.status.detailedState}</span>
         ) : (
           <>
+            {isDelayed(game) && (
+              <>
+                <span className="font-bold italic underline">
+                  {game.status.detailedState}
+                </span>
+                {" - "}
+              </>
+            )}
             <span className="font-semibold">Time:</span>{" "}
-            {new Date(game.gameDate).toLocaleTimeString()}
+            {new Date(game.gameDate).toLocaleTimeString()}{" "}
           </>
         )}
       </div>
       <div className="my-2 grid grid-cols-6 grid-rows-2 gap-2">
         <TeamScoreLine
           team={game.teams.away}
-          detailedState={game.status.detailedState}
+          game={game}
           className={`row-start-1 ${showBases ? "col-span-3" : "col-span-6"}`}
         />
         <TeamScoreLine
           team={game.teams.home}
-          detailedState={game.status.detailedState}
+          game={game}
           className={`row-start-2 ${showBases ? "col-span-3" : "col-span-6"}`}
         />
 
         {showBases && <Bases linescore={game.linescore} />}
       </div>
-
-      {showPreGameStatus && (
-        <div className="flex justify-center gap-2">
-          <div>
-            <span className="font-semibold">Status:</span>{" "}
-            {game.status.detailedState}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
