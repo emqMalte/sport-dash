@@ -43,7 +43,7 @@ const showScoreDetailedStates: DetailedState[] = [
   "Final",
 ];
 
-const TeamScore = ({
+const TeamScoreLine = ({
   team,
   detailedState,
   className,
@@ -59,7 +59,7 @@ const TeamScore = ({
 
   return (
     <div className={twMerge("grid grid-cols-3 text-lg", className)}>
-      <div className="flex">
+      <div className="flex items-center">
         <img
           src={`/mlb/light/${teamShortName.toLowerCase()}_l.svg`}
           alt={team.team.name}
@@ -118,12 +118,6 @@ const Bases = ({ linescore }: { linescore: Linescore }) => {
         <div className="absolute -bottom-2 right-1/2 flex translate-x-1/2 gap-1 text-xs">
           {outs}
         </div>
-        {
-          //<div className="absolute -right-4 top-0  font-semibold">
-          //<FontAwesomeIcon icon={faCaretUp} />
-          //17th
-          //</div>
-        }
       </div>
     </div>
   );
@@ -172,12 +166,12 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
         )}
       </div>
       <div className="my-2 grid grid-cols-6 grid-rows-2 gap-2">
-        <TeamScore
+        <TeamScoreLine
           team={game.teams.away}
           detailedState={game.status.detailedState}
           className={`row-start-1 ${showBases ? "col-span-3" : "col-span-6"}`}
         />
-        <TeamScore
+        <TeamScoreLine
           team={game.teams.home}
           detailedState={game.status.detailedState}
           className={`row-start-2 ${showBases ? "col-span-3" : "col-span-6"}`}
