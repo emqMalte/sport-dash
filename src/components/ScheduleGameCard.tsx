@@ -29,7 +29,9 @@ const TeamScoreLine = ({
   const showScore = isInProgress(game) || isFinal(game);
 
   return (
-    <div className={twMerge("grid grid-cols-3 text-lg", className)}>
+    <div
+      className={twMerge("grid grid-cols-3 items-center text-lg", className)}
+    >
       <div className="flex items-center">
         <img
           src={`/mlb/light/${teamShortName.toLowerCase()}_l.svg`}
@@ -39,19 +41,19 @@ const TeamScoreLine = ({
         <span className="ml-2 font-semibold">{teamShortName}</span>
       </div>
       {showLeagueRecord && (
-        <span className={twMerge("text-end", !showScore ? "col-span-2" : "")}>
+        <div className={twMerge("text-end", !showScore ? "col-span-2" : "")}>
           {team.leagueRecord.wins} - {team.leagueRecord.losses}
-        </span>
+        </div>
       )}
       {showScore && (
-        <span
+        <div
           className={twMerge(
             "text-end font-bold",
             !showLeagueRecord ? "col-span-2" : "",
           )}
         >
           {team.score}
-        </span>
+        </div>
       )}
     </div>
   );
@@ -75,8 +77,8 @@ const Bases = ({ linescore }: { linescore: Linescore }) => {
   }
 
   return (
-    <div className="col-span-3 row-span-2 ">
-      <div className="relative m-3 mx-auto h-16 w-24">
+    <div className="col-span-2 row-span-2 ">
+      <div className="relative mx-auto my-3 h-16 w-24">
         <div
           className={`mx-auto h-8 w-8 rotate-45 border-2 border-black transition-colors ${linescore.offense.second && "bg-orange-700"}`}
         ></div>
@@ -142,9 +144,9 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
 
   return (
     <div className={classes}>
-      <h2 className="text-lg font-bold">
-        {game.teams.away.team.name} @ {game.teams.home.team.name}
-      </h2>
+      {/* <h2 className="text-lg font-bold"> */}
+      {/*   {game.teams.away.team.name} @ {game.teams.home.team.name} */}
+      {/* </h2> */}
       <div className="text-center">
         {showBases ? (
           <span>
@@ -171,16 +173,16 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
           </>
         )}
       </div>
-      <div className="my-2 grid grid-cols-6 grid-rows-2 gap-2">
+      <div className="my-2 grid auto-cols-max grid-cols-5 grid-rows-2 gap-2">
         <TeamScoreLine
           team={game.teams.away}
           game={game}
-          className={`row-start-1 ${showBases ? "col-span-3" : "col-span-6"}`}
+          className={`row-start-1 ${showBases ? "col-span-3" : "col-span-full"}`}
         />
         <TeamScoreLine
           team={game.teams.home}
           game={game}
-          className={`row-start-2 ${showBases ? "col-span-3" : "col-span-6"}`}
+          className={`row-start-2 ${showBases ? "col-span-3" : "col-span-full"}`}
         />
 
         {showBases && <Bases linescore={game.linescore} />}
