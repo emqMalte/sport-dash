@@ -40,16 +40,14 @@ const TeamScoreLine = ({
         />
         <span className="ml-2 font-semibold">{teamShortName}</span>
       </div>
-      {showLeagueRecord && (
-        <div className={twMerge("text-end", !showScore ? "col-span-2" : "")}>
-          {team.leagueRecord.wins} - {team.leagueRecord.losses}
-        </div>
-      )}
+      <div className={twMerge("text-end", !showScore ? "col-span-2" : "")}>
+        {team.leagueRecord.wins} - {team.leagueRecord.losses}
+      </div>
       {showScore && (
         <div
           className={twMerge(
             "text-end font-bold",
-            !showLeagueRecord ? "col-span-2" : "",
+            !showLeagueRecord ? "col-span-1" : "",
           )}
         >
           {team.score}
@@ -101,9 +99,9 @@ const scheduleGameCardVariant = cva(
   {
     variants: {
       gameState: {
-        default: ["bordert-t-slate-800"],
+        default: ["bordert-t-slate-800 bg-slate-100"],
         pregame: ["border-t-blue-900", "bg-slate-50"],
-        inProgress: ["border-t-green-700"],
+        inProgress: ["border-t-green-700 bg-white"],
         delayed: ["border-t-red-900", "bg-slate-300"],
         final: ["border-t-slate-800", "bg-slate-100"],
       },
