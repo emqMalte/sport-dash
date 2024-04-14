@@ -4,7 +4,7 @@ interface Env {
   UNSPLASH_SECRET_KEY: string;
 }
 
-export const onRequest: PagesFunction<Env> = (context) => {
+export const onRequest: PagesFunction<Env> = async (context) => {
   const url = new URL("https://api.unsplash.com/photos/random");
 
   const urlParams = new URLSearchParams();
@@ -14,9 +14,10 @@ export const onRequest: PagesFunction<Env> = (context) => {
 
   url.search = urlParams.toString();
 
-  return fetch(url, {
+  return await fetch(url, {
     headers: {
       Authorization: `Client-ID ${context.env.UNSPLASH_ACCESS_KEY}`,
     },
+    cf: { cacheEverything: true, cacheTtl: 900 },
   });
 };
