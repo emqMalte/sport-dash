@@ -14,10 +14,15 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   url.search = urlParams.toString();
 
-  return await fetch(url, {
+  let response = await fetch(url, {
     headers: {
       Authorization: `Client-ID ${context.env.UNSPLASH_ACCESS_KEY}`,
     },
     cf: { cacheEverything: true, cacheTtl: 900 },
   });
+
+  response = new Response(response.body, response);
+  response.headers.set("Cache-Control", "public, max-age=900");
+
+  return response;
 };
