@@ -21,7 +21,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     cf: { cacheEverything: true, cacheTtl: 900 },
   });
 
-  response = new Response(response.body, response);
+  response = new Response(response.body);
   response.headers.set("Cache-Control", "public, max-age=900");
 
   return response;
