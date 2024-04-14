@@ -37,6 +37,9 @@ dependencies:
     version: 2.2.2
 
 devDependencies:
+  '@cloudflare/workers-types':
+    specifier: ^4.20240405.0
+    version: 4.20240405.0
   '@types/react':
     specifier: ^18.2.78
     version: 18.2.78
@@ -101,6 +104,10 @@ packages:
     dependencies:
       regenerator-runtime: 0.14.1
     dev: false
+
+  /@cloudflare/workers-types@4.20240405.0:
+    resolution: {integrity: sha512-sEVOhyOgXUwfLkgHqbLZa/sfkSYrh7/zLmI6EZNibPaVPvAnAcItbNNl3SAlLyLKuwf8m4wAIAgu9meKWCvXjg==}
+    dev: true
 
   /@esbuild/aix-ppc64@0.20.2:
     resolution: {integrity: sha512-D+EBOJHXdNZcLJRBkhENNG8Wji2kgc9AZ9KiPr1JuZjsNtyHzrsfLRrY0tk2H2aoFu6RANO1y1iPPUCDYWkb5g==}
