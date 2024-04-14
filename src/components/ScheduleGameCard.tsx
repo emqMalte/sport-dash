@@ -11,39 +11,7 @@ import {
   showScores,
 } from "../utils/gameState";
 import { cva } from "class-variance-authority";
-
-const teamMappings = {
-  "Baltimore Orioles": "BAL",
-  "Boston Red Sox": "BOS",
-  "New York Yankees": "NYY",
-  "Tampa Bay Rays": "TB",
-  "Toronto Blue Jays": "TOR",
-  "Chicago White Sox": "CWS",
-  "Cleveland Guardians": "CLE",
-  "Detroit Tigers": "DET",
-  "Kansas City Royals": "KC",
-  "Minnesota Twins": "MIN",
-  "Houston Astros": "HOU",
-  "Los Angeles Angels": "LAA",
-  "Oakland Athletics": "OAK",
-  "Seattle Mariners": "SEA",
-  "Texas Rangers": "TEX",
-  "Atlanta Braves": "ATL",
-  "Miami Marlins": "MIA",
-  "New York Mets": "NYM",
-  "Philadelphia Phillies": "PHI",
-  "Washington Nationals": "WSH",
-  "Chicago Cubs": "CHC",
-  "Cincinnati Reds": "CIN",
-  "Milwaukee Brewers": "MIL",
-  "Pittsburgh Pirates": "PIT",
-  "St. Louis Cardinals": "STL",
-  "Arizona Diamondbacks": "ARI",
-  "Colorado Rockies": "COL",
-  "Los Angeles Dodgers": "LAD",
-  "San Diego Padres": "SD",
-  "San Francisco Giants": "SF",
-};
+import { teamMappings } from "../utils/teamMappings";
 
 const TeamScoreLine = ({
   team,
