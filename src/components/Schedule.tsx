@@ -19,7 +19,7 @@ const Loading = () => (
   </div>
 );
 
-const Errror = ({ error }: { error: Error }) => (
+const Error = ({ error }: { error: Error }) => (
   <div className="rounded border bg-red-800 p-4 text-center text-2xl text-white drop-shadow-xl">
     <span className="font-extrabold">Error</span>: {error.message}
   </div>
@@ -97,7 +97,7 @@ export const Schedule = () => {
       <h1 className="my-4 text-center text-6xl font-bold">MLB Schedule</h1>
 
       {isLoading && <Loading />}
-      {error && <Errror error={error} />}
+      {error && <Error error={error} />}
 
       {data?.dates.map((date) => (
         <ScheduleDate key={date.date.toString()} date={date} />
