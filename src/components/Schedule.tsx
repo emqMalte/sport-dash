@@ -5,25 +5,9 @@ import {
   Schedule as MlbSchedule,
 } from "../types/mlb/Schedule";
 import { ScheduleGameCard } from "./ScheduleGameCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { isDelayed, isFinal, isInProgress } from "../utils/gameState";
-
-const Loading = () => (
-  <div className="my-16 text-center text-2xl font-bold">
-    <FontAwesomeIcon
-      icon={faSpinner}
-      className="mx-auto my-2 block animate-spin text-6xl"
-    />
-    Loading...
-  </div>
-);
-
-const Error = ({ error }: { error: Error }) => (
-  <div className="rounded border bg-red-800 p-4 text-center text-2xl text-white drop-shadow-xl">
-    <span className="font-extrabold">Error</span>: {error.message}
-  </div>
-);
+import { Loading } from "./Loading";
+import { Error } from "./Error";
 
 const ScheduleDateSection = ({
   title,
