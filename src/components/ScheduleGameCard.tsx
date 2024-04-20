@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { Away, Game, Linescore } from "../types/mlb/Schedule";
+import { Away, Game } from "../types/mlb/Schedule";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle as faCircleSolid } from "@fortawesome/free-solid-svg-icons";
 import { faCircle } from "@fortawesome/free-regular-svg-icons";
@@ -11,7 +11,11 @@ import {
   showScores,
 } from "../utils/gameState";
 import { cva } from "class-variance-authority";
-import { teamMappings } from "../utils/teamMappings";
+import { useContext } from "react";
+import { SelectedGameContext } from "../contexts/SelectedGameContext";
+import { TeamLogo } from "./TeamLogo";
+import { TeamShortName } from "./TeamShortName";
+import { Bases } from "./Bases";
 
 const TeamScoreLine = ({
   team,
@@ -23,8 +27,6 @@ const TeamScoreLine = ({
 
   className?: string;
 }) => {
-  const teamShortName =
-    teamMappings[team.team.name as keyof typeof teamMappings];
   const showLeagueRecord = !isInProgress(game);
   const showScore = isInProgress(game) || isFinal(game);
 
@@ -33,12 +35,8 @@ const TeamScoreLine = ({
       className={twMerge("grid grid-cols-3 items-center text-lg", className)}
     >
       <div className="flex items-center">
-        <img
-          src={`/mlb/light/${teamShortName.toLowerCase()}_l.svg`}
-          alt={team.team.name}
-          className="h-8 w-8"
-        />
-        <span className="ml-2 font-semibold">{teamShortName}</span>
+        <TeamLogo team={team} />
+        <TeamShortName team={team} />
       </div>
       <div className={twMerge("text-end", !showScore ? "col-span-2" : "")}>
         {team.leagueRecord.wins} - {team.leagueRecord.losses}
@@ -53,43 +51,6 @@ const TeamScoreLine = ({
           {team.score}
         </div>
       )}
-    </div>
-  );
-};
-
-const Bases = ({ linescore }: { linescore: Linescore }) => {
-  const outs = [];
-
-  for (let i = 0; i < 3; i++) {
-    if (linescore?.outs && i < linescore.outs) {
-      outs.push(
-        <FontAwesomeIcon
-          key={i}
-          icon={faCircleSolid}
-          className="text-red-800"
-        />,
-      );
-      continue;
-    }
-    outs.push(<FontAwesomeIcon key={i} icon={faCircle} />);
-  }
-
-  return (
-    <div className="col-span-2 row-span-2 ">
-      <div className="relative mx-auto my-3 h-16 w-24">
-        <div
-          className={`mx-auto h-8 w-8 rotate-45 border-2 border-black transition-colors ${linescore.offense.second && "bg-orange-700"}`}
-        ></div>
-        <div
-          className={`absolute bottom-0 left-0 inline-block h-8 w-8 rotate-45 border-2 border-black transition-colors ${linescore.offense.third && "bg-orange-700"} `}
-        ></div>
-        <div
-          className={`absolute bottom-0 right-0 inline-block h-8 w-8 rotate-45 border-2 border-black transition-colors ${linescore.offense.first && "bg-orange-700"}`}
-        ></div>
-        <div className="absolute -bottom-2 right-1/2 flex translate-x-1/2 gap-1 text-xs">
-          {outs}
-        </div>
-      </div>
     </div>
   );
 };
@@ -116,9 +77,15 @@ interface ScheduleGameCardProps {
   game: Game;
 }
 export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
+  const selectedGameContext = useContext(SelectedGameContext);
+
   const showScore = showScores(game);
   const showBases = isInProgress(game);
   const outs = [];
+
+  const onClick = () => {
+    selectedGameContext?.setSelectedGame(game);
+  };
 
   for (let i = 0; i < 3; i++) {
     if (game?.linescore?.outs && i < game.linescore.outs) {
@@ -141,7 +108,7 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
   const classes = twMerge(scheduleGameCardVariant({ gameState: gameState }));
 
   return (
-    <div className={classes}>
+    <div className={classes} onClick={onClick}>
       {/* <h2 className="text-lg font-bold"> */}
       {/*   {game.teams.away.team.name} @ {game.teams.home.team.name} */}
       {/* </h2> */}

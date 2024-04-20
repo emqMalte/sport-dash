@@ -8,6 +8,8 @@ import { ScheduleGameCard } from "./ScheduleGameCard";
 import { isDelayed, isFinal, isInProgress } from "../utils/gameState";
 import { Loading } from "./Loading";
 import { Error } from "./Error";
+import { HeroGame } from "./HeroGame";
+import { SelectedGameContextProvider } from "../contexts/SelectedGameContext";
 
 const ScheduleDateSection = ({
   title,
@@ -57,6 +59,8 @@ const ScheduleDate = ({ date }: { date: DateElement }) => {
         {Intl.DateTimeFormat().resolvedOptions().timeZone})
       </p>
 
+      <HeroGame />
+
       <ScheduleDateSection title="Active Games" games={activeGames} />
       <ScheduleDateSection title="Scheduled Games" games={scheduledGames} />
       <ScheduleDateSection title="Completed Games" games={completedGames} />
@@ -83,9 +87,11 @@ export const Schedule = () => {
       {isLoading && <Loading />}
       {error && <Error error={error} />}
 
-      {data?.dates.map((date) => (
-        <ScheduleDate key={date.date.toString()} date={date} />
-      ))}
+      <SelectedGameContextProvider>
+        {data?.dates.map((date) => (
+          <ScheduleDate key={date.date.toString()} date={date} />
+        ))}
+      </SelectedGameContextProvider>
     </div>
   );
 };
