@@ -11,7 +11,7 @@ export const teamMappings = {
   "Minnesota Twins": "MIN",
   "Houston Astros": "HOU",
   "Los Angeles Angels": "LAA",
-  "Oakland Athletics": "OAK",
+  Athletics: "ATH",
   "Seattle Mariners": "SEA",
   "Texas Rangers": "TEX",
   "Atlanta Braves": "ATL",
