@@ -81,7 +81,7 @@ export const Schedule = () => {
   });
 
   return (
-    <div className="my-6 rounded-3xl bg-white/20 py-4 drop-shadow-2xl backdrop-blur">
+    <div className="my-6 rounded-3xl bg-white/20 py-4 drop-shadow-2xl backdrop-blur-sm">
       <h1 className="my-4 text-center text-6xl font-bold">MLB Schedule</h1>
 
       {isLoading && <Loading />}
