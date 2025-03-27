@@ -10,6 +10,8 @@ import { Loading } from "./Loading";
 import { Error } from "./Error";
 // import { HeroGame } from "./HeroGame";
 import { SelectedGameContextProvider } from "../contexts/selected-game-context/provider";
+import { useLocalTimezone } from "../hooks/use-local-timezone";
+import { useDateParam } from "../hooks/use-date-param";
 
 const ScheduleDateSection = ({
   title,
@@ -34,7 +36,15 @@ const ScheduleDateSection = ({
   );
 };
 
-const ScheduleDate = ({ date }: { date: DateElement }) => {
+const ScheduleDate = ({
+  date,
+  onDateChange,
+  currentDate,
+}: {
+  date: DateElement;
+  onDateChange: (days: number) => void;
+  currentDate: Date;
+}) => {
   const scheduledGames: Game[] = [];
   const activeGames: Game[] = [];
   const completedGames: Game[] = [];
@@ -49,11 +59,38 @@ const ScheduleDate = ({ date }: { date: DateElement }) => {
     }
   });
 
+  const isToday =
+    new Date(date.date).toDateString() === currentDate.toDateString();
+
   return (
     <div key={date.date.toString()}>
-      <h2 className="my-3 text-center text-2xl font-bold">
-        {new Date(date.date).toLocaleDateString()}
-      </h2>
+      <div className="flex items-center justify-center gap-4">
+        <DateNavigationButton
+          direction="prev"
+          onClick={() => onDateChange(-1)}
+        />
+        <h2 className="my-3 text-center text-2xl font-bold">
+          {new Date(date.date).toLocaleDateString(undefined, {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </h2>
+        <DateNavigationButton
+          direction="next"
+          onClick={() => onDateChange(1)}
+        />
+        {!isToday && (
+          <button
+            onClick={() => onDateChange(0)}
+            className="rounded-full bg-white/20 px-4 py-2 text-sm hover:bg-white/30"
+            aria-label="Jump to today"
+          >
+            Jump to Today
+          </button>
+        )}
+      </div>
       <p className="text-center">
         All times are in your local timezone (
         {Intl.DateTimeFormat().resolvedOptions().timeZone})
@@ -68,13 +105,64 @@ const ScheduleDate = ({ date }: { date: DateElement }) => {
   );
 };
 
+const DateNavigationButton = ({
+  direction,
+  onClick,
+}: {
+  direction: "prev" | "next";
+  onClick: () => void;
+}) => {
+  const isPrev = direction === "prev";
+  const ariaLabel = isPrev ? "Previous day" : "Next day";
+  const path = isPrev
+    ? "M15.75 19.5L8.25 12l7.5-7.5"
+    : "M8.25 4.5l7.5 7.5-7.5 7.5";
+
+  return (
+    <button
+      onClick={onClick}
+      className="rounded-full p-2 hover:bg-white/20"
+      aria-label={ariaLabel}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="h-6 w-6"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d={path} />
+      </svg>
+    </button>
+  );
+};
+
 export const Schedule = () => {
+  const [timezone] = useLocalTimezone();
+  const [date, setDate] = useDateParam();
+
+  const queryUrl = new URL("https://statsapi.mlb.com/api/v1/schedule");
+
+  queryUrl.searchParams.set("sportId", "1");
+  queryUrl.searchParams.set("hydrate", "linescore");
+  queryUrl.searchParams.set("timeZone", timezone);
+  queryUrl.searchParams.set("startDate", date.toISOString().split("T")[0]);
+  queryUrl.searchParams.set("endDate", date.toISOString().split("T")[0]);
+
+  const handleDateChange = (days: number) => {
+    if (days === 0) {
+      setDate(new Date());
+    } else {
+      const newDate = new Date(date);
+      newDate.setDate(newDate.getDate() + days);
+      setDate(newDate);
+    }
+  };
+
   const { isLoading, error, data } = useQuery<MlbSchedule>({
-    queryKey: ["schedule"],
-    queryFn: () =>
-      fetch(
-        "https://statsapi.mlb.com/api/v1/schedule?sportId=1&hydrate=linescore",
-      ).then((res) => res.json()),
+    queryKey: ["schedule", date.toISOString().split("T")[0]],
+    queryFn: () => fetch(queryUrl).then((res) => res.json()),
     staleTime: 1000 * 60,
     refetchInterval: 1000 * 60,
     refetchIntervalInBackground: false,
@@ -91,7 +179,12 @@ export const Schedule = () => {
 
       <SelectedGameContextProvider>
         {data?.dates.map((date) => (
-          <ScheduleDate key={date.date.toString()} date={date} />
+          <ScheduleDate
+            key={date.date.toString()}
+            date={date}
+            onDateChange={handleDateChange}
+            currentDate={new Date()}
+          />
         ))}
       </SelectedGameContextProvider>
     </div>
