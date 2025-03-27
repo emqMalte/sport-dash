@@ -1,4 +1,3 @@
-// import "./App.css";
 import { Schedule } from "./components/Schedule";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
