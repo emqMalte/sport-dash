@@ -12,7 +12,7 @@ import {
 } from "../utils/gameState";
 import { cva } from "class-variance-authority";
 import { useContext } from "react";
-import { SelectedGameContext } from "../contexts/SelectedGameContext";
+import { SelectedGameContext } from "../contexts/selected-game-context/context";
 import { TeamLogo } from "./TeamLogo";
 import { TeamShortName } from "./TeamShortName";
 import { Bases } from "./Bases";

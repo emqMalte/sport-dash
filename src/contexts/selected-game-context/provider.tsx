@@ -1,13 +1,6 @@
-import { Dispatch, SetStateAction, createContext, useState } from "react";
-import { Game } from "../types/mlb/Schedule";
-
-interface SelectedGameContextValue {
-  selectedGame: Game | null;
-  setSelectedGame: Dispatch<SetStateAction<Game | null>>;
-}
-
-export const SelectedGameContext =
-  createContext<SelectedGameContextValue | null>(null);
+import { useState } from "react";
+import { SelectedGameContext } from "./context";
+import { Game } from "../../types/mlb/Schedule";
 
 interface SelectedGameContextProviderProps {
   children: React.ReactNode;
