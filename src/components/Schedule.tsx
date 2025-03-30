@@ -5,7 +5,7 @@ import {
   Schedule as MlbSchedule,
 } from "../types/mlb/Schedule";
 import { ScheduleGameCard } from "./ScheduleGameCard";
-import { isDelayed, isFinal, isInProgress } from "../utils/gameState";
+import { isFinal, isInProgress } from "../utils/gameState";
 import { Loading } from "./Loading";
 import { Error } from "./Error";
 // import { HeroGame } from "./HeroGame";
@@ -50,7 +50,7 @@ const ScheduleDate = ({
   const completedGames: Game[] = [];
 
   date.games.forEach((game) => {
-    if (isFinal(game) || isDelayed(game)) {
+    if (isFinal(game)) {
       completedGames.push(game);
     } else if (isInProgress(game)) {
       activeGames.push(game);
@@ -163,8 +163,8 @@ export const Schedule = () => {
   const { isLoading, error, data } = useQuery<MlbSchedule>({
     queryKey: ["schedule", date.toISOString().split("T")[0]],
     queryFn: () => fetch(queryUrl).then((res) => res.json()),
-    staleTime: 1000 * 60,
-    refetchInterval: 1000 * 60,
+    staleTime: 1000 * 30,
+    refetchInterval: 1000 * 30,
     refetchIntervalInBackground: false,
   });
 
