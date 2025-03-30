@@ -145,7 +145,7 @@ export const Schedule = () => {
   const queryUrl = new URL("https://statsapi.mlb.com/api/v1/schedule");
 
   queryUrl.searchParams.set("sportId", "1");
-  queryUrl.searchParams.set("hydrate", "linescore");
+  queryUrl.searchParams.set("hydrate", "linescore,scoringplays");
   queryUrl.searchParams.set("timeZone", timezone);
   queryUrl.searchParams.set("startDate", date.toISOString().split("T")[0]);
   queryUrl.searchParams.set("endDate", date.toISOString().split("T")[0]);

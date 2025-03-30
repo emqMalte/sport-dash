@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { Away, Game } from "../types/mlb/Schedule";
+import { Away, Game, ScoringPlay } from "../types/mlb/Schedule";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle as faCircleSolid } from "@fortawesome/free-solid-svg-icons";
 import { faCircle } from "@fortawesome/free-regular-svg-icons";
@@ -18,20 +18,21 @@ import { TeamShortName } from "./TeamShortName";
 import { Bases } from "./Bases";
 
 // Custom hook to track score changes
-const useScoreChange = (currentScore: number) => {
+const useScoreChange = (currentScore: number, scoringPlays: ScoringPlay[]) => {
   const prevScoreRef = useRef(currentScore);
+  const prevScoringPlaysRef = useRef(scoringPlays);
   const [isScoreChanged, setIsScoreChanged] = useState(false);
   const [isHomeRun, setIsHomeRun] = useState(false);
 
   useEffect(() => {
     // Only trigger animation if score increased
     if (prevScoreRef.current < currentScore) {
-      const scoreIncrease = currentScore - prevScoreRef.current;
+      // const scoreIncrease = currentScore - prevScoreRef.current;
       setIsScoreChanged(true);
 
-      // Simulate home run detection (if score increases by more than 1)
-      // In a real app, you'd get this from the API
-      setIsHomeRun(scoreIncrease > 1 || Math.random() < 0.4);
+      if (prevScoringPlaysRef.current.at(-1)?.result.event === "Home Run") {
+        setIsHomeRun(true);
+      }
 
       const timer = setTimeout(() => {
         setIsScoreChanged(false);
@@ -41,7 +42,8 @@ const useScoreChange = (currentScore: number) => {
       return () => clearTimeout(timer);
     }
     prevScoreRef.current = currentScore;
-  }, [currentScore]);
+    prevScoringPlaysRef.current = scoringPlays;
+  }, [currentScore, scoringPlays]);
 
   return { isScoreChanged, isHomeRun };
 };
@@ -221,7 +223,10 @@ const TeamScoreLine = ({
 }) => {
   const showLeagueRecord = !isInProgress(game);
   const showScore = isInProgress(game) || isFinal(game);
-  const { isScoreChanged, isHomeRun } = useScoreChange(team.score || 0);
+  const { isScoreChanged, isHomeRun } = useScoreChange(
+    team.score || 0,
+    game.scoringPlays,
+  );
 
   // Report home run to parent component
   useEffect(() => {
@@ -292,6 +297,7 @@ const scheduleGameCardVariant = cva(
 interface ScheduleGameCardProps {
   game: Game;
 }
+
 export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
   const selectedGameContext = useContext(SelectedGameContext);
   const [homeRunInfo, setHomeRunInfo] = useState<{
