@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { Away, Game, ScoringPlay } from "../types/mlb/Schedule";
+import { Away, Game } from "../types/mlb/Schedule";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle as faCircleSolid } from "@fortawesome/free-solid-svg-icons";
 import { faCircle } from "@fortawesome/free-regular-svg-icons";
@@ -11,49 +11,12 @@ import {
   showScores,
 } from "../utils/gameState";
 import { cva } from "class-variance-authority";
-import {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-  useCallback,
-} from "react";
+import { useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { SelectedGameContext } from "../contexts/selected-game-context/context";
 import { TeamLogo } from "./TeamLogo";
 import { TeamShortName } from "./TeamShortName";
 import { Bases } from "./Bases";
-
-// Custom hook to track score changes
-const useScoreChange = (currentScore: number, scoringPlays: ScoringPlay[]) => {
-  const prevScoreRef = useRef(currentScore);
-  const prevScoringPlaysRef = useRef(scoringPlays);
-  const [animationState, setAnimationState] = useState({
-    isScoreChanged: false,
-    isHomeRun: false,
-  });
-
-  useEffect(() => {
-    // Only trigger animation if score increased
-    if (prevScoreRef.current < currentScore) {
-      // const scoreIncrease = currentScore - prevScoreRef.current;
-      setAnimationState({
-        isScoreChanged: true,
-        isHomeRun: scoringPlays.at(-1)?.result.event === "Home Run",
-      });
-
-      const timer = setTimeout(() => {
-        setAnimationState({ isScoreChanged: false, isHomeRun: false });
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-    prevScoreRef.current = currentScore;
-    prevScoringPlaysRef.current = scoringPlays;
-  }, [currentScore, scoringPlays]);
-
-  return animationState;
-};
+import { useScoreChangeHook } from "../hooks/use-score-change-hook";
 
 // Home Run Particle component
 const HomeRunParticle = ({
@@ -230,7 +193,7 @@ const TeamScoreLine = ({
 }) => {
   const showLeagueRecord = !isInProgress(game);
   const showScore = isInProgress(game) || isFinal(game);
-  const { isScoreChanged, isHomeRun } = useScoreChange(
+  const { isScoreChanged, isHomeRun } = useScoreChangeHook(
     team.score || 0,
     game.scoringPlays,
   );
