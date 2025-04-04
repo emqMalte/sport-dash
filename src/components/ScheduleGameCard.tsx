@@ -1,8 +1,5 @@
 import { twMerge } from "tailwind-merge";
 import { Away, Game } from "../types/mlb/Schedule";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle as faCircleSolid } from "@fortawesome/free-solid-svg-icons";
-import { faCircle } from "@fortawesome/free-regular-svg-icons";
 import {
   isDelayed,
   isFinal,
@@ -280,19 +277,10 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
 
   const showScore = showScores(game);
   const showBases = isInProgress(game);
-  const outs = [];
 
   const onClick = () => {
     selectedGameContext?.setSelectedGame(game);
   };
-
-  for (let i = 0; i < 3; i++) {
-    if (game?.linescore?.outs && i < game.linescore.outs) {
-      outs.push(<FontAwesomeIcon key={i} icon={faCircleSolid} />);
-      continue;
-    }
-    outs.push(<FontAwesomeIcon key={i} icon={faCircle} />);
-  }
 
   const gameState = useMemo(() => {
     return isFinal(game)
