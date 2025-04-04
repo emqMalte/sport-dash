@@ -2,9 +2,35 @@ import { Linescore } from "../types/mlb/Schedule";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle as faCircleSolid } from "@fortawesome/free-solid-svg-icons";
 import { faCircle } from "@fortawesome/free-regular-svg-icons";
+import { twMerge } from "tailwind-merge";
+
+const Base = ({
+  isOnBase,
+  teamId,
+  className,
+}: {
+  isOnBase: boolean;
+  teamId: number;
+  className?: string;
+}) => {
+  const color = isOnBase ? `var(--team-${teamId}-color)` : undefined;
+
+  return (
+    <div
+      className={twMerge(
+        `h-8 w-8 rotate-45 border-2 border-black transition-colors duration-500`,
+        className,
+      )}
+      style={{
+        backgroundColor: color,
+      }}
+    ></div>
+  );
+};
 
 export const Bases = ({ linescore }: { linescore: Linescore }) => {
   const outs = [];
+  const teamId = linescore.offense.team.id;
 
   for (let i = 0; i < 3; i++) {
     if (linescore?.outs && i < linescore.outs) {
@@ -12,7 +38,7 @@ export const Bases = ({ linescore }: { linescore: Linescore }) => {
         <FontAwesomeIcon
           key={i}
           icon={faCircleSolid}
-          className="text-red-800"
+          className="text-red-800 transition-colors duration-300"
         />,
       );
       continue;
@@ -21,18 +47,24 @@ export const Bases = ({ linescore }: { linescore: Linescore }) => {
   }
 
   return (
-    <div className="col-span-2 row-span-2 ">
+    <div className="col-span-2 row-span-2">
       <div className="relative mx-auto my-3 h-16 w-24">
-        <div
-          className={`mx-auto h-8 w-8 rotate-45 border-2 border-black transition-colors ${linescore.offense.second && "bg-orange-700"}`}
-        ></div>
-        <div
-          className={`absolute bottom-0 left-0 inline-block h-8 w-8 rotate-45 border-2 border-black transition-colors ${linescore.offense.third && "bg-orange-700"} `}
-        ></div>
-        <div
-          className={`absolute bottom-0 right-0 inline-block h-8 w-8 rotate-45 border-2 border-black transition-colors ${linescore.offense.first && "bg-orange-700"}`}
-        ></div>
-        <div className="absolute -bottom-2 right-1/2 flex translate-x-1/2 gap-1 text-xs">
+        <Base
+          className="mx-auto"
+          isOnBase={!!linescore.offense.second}
+          teamId={teamId}
+        />
+        <Base
+          className="absolute bottom-0 left-0"
+          isOnBase={!!linescore.offense.third}
+          teamId={teamId}
+        />
+        <Base
+          className="absolute right-0 bottom-0"
+          isOnBase={!!linescore.offense.first}
+          teamId={teamId}
+        />
+        <div className="absolute right-1/2 -bottom-2 flex translate-x-1/2 gap-1 text-xs">
           {outs}
         </div>
       </div>
