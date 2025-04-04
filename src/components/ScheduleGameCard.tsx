@@ -156,7 +156,7 @@ const AnimatedScore = ({
     <div className="relative">
       <span
         className={twMerge(
-          "inline-block transition-all",
+          "inline-block font-extrabold transition-all",
           isAnimating &&
             (isHomeRun ? "animate-hr-text" : "animate-score-pulse"),
         )}
@@ -170,7 +170,7 @@ const AnimatedScore = ({
       </span>
       {isAnimating && !isHomeRun && (
         <span
-          className="animate-score-increment absolute -top-3 left-1/2 -translate-x-1/2 opacity-0"
+          className="animate-score-increment absolute -top-3 left-1/2 -translate-x-1/2 font-bold opacity-0"
           style={{ color: `var(--team-${teamId}-color, rgb(22 163 74))` }}
         >
           +1
@@ -230,7 +230,7 @@ const TeamScoreLine = ({
       {showScore && (
         <div
           className={twMerge(
-            "text-end font-bold",
+            "text-end text-xl font-bold",
             !showLeagueRecord ? "col-span-1" : "",
           )}
         >
