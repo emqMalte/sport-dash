@@ -27,7 +27,7 @@ const ScheduleDateSection = ({
   return (
     <section className="my-8">
       <h2 className="mb-4 text-center text-xl font-bold">{title}</h2>
-      <div className="flex flex-wrap justify-center">
+      <div className="flex flex-wrap justify-center gap-4">
         {games.map((game) => (
           <ScheduleGameCard key={game.gamePk} game={game} />
         ))}
