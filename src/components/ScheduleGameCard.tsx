@@ -221,13 +221,18 @@ const TeamScoreLine = ({
         <TeamLogo team={team} />
         <TeamShortName team={team} />
       </div>
-      <div className={twMerge("text-end", !showScore ? "col-span-2" : "")}>
+      <div
+        className={twMerge(
+          "text-end font-mono",
+          !showScore ? "col-span-2" : "",
+        )}
+      >
         {team.leagueRecord.wins} - {team.leagueRecord.losses}
       </div>
       {showScore && (
         <div
           className={twMerge(
-            "text-end text-xl font-bold",
+            "text-end font-mono text-xl font-bold",
             !showLeagueRecord ? "col-span-1" : "",
           )}
         >
