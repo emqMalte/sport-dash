@@ -205,7 +205,7 @@ const TeamScoreLine = ({
   return (
     <div
       className={twMerge(
-        "grid grid-cols-[max-content_1fr_max-content] items-center gap-4 text-lg",
+        "grid grid-cols-subgrid items-center gap-4 text-lg",
         isScoreChanged && !isHomeRun && "animate-team-score-flash", // Only flash if not home run
         className,
       )}
@@ -348,22 +348,51 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
           </>
         )}
       </div>
-      <div className="my-2 grid auto-cols-max grid-cols-5 grid-rows-2 gap-2">
-        <TeamScoreLine
-          team={game.teams.away}
-          game={game}
-          className={`row-start-1 ${showBases ? "col-span-3" : "col-span-full"}`}
-          onHomeRun={handleHomeRun}
-        />
-        <TeamScoreLine
-          team={game.teams.home}
-          game={game}
-          className={`row-start-2 ${showBases ? "col-span-3" : "col-span-full"}`}
-          onHomeRun={handleHomeRun}
-        />
+      <ScheduleGameScoreLine
+        game={game}
+        showBases={showBases}
+        handleHomeRun={handleHomeRun}
+      />
+    </div>
+  );
+};
 
-        {showBases && <Bases linescore={game.linescore} />}
-      </div>
+const ScheduleGameScoreLineVariants = cva(
+  "grid grid-cols-[max-content_max-content_1fr] grid-rows-2 gap-2",
+  {
+    variants: {
+      showBases: {
+        true: "grid-cols-[max-content_max-content_1fr_1fr_1fr]",
+      },
+    },
+  },
+);
+
+export const ScheduleGameScoreLine = ({
+  game,
+  showBases,
+  handleHomeRun,
+}: {
+  game: Game;
+  showBases: boolean;
+  handleHomeRun: (isHomeRun: boolean, teamId: number) => void;
+}) => {
+  return (
+    <div className={ScheduleGameScoreLineVariants({ showBases })}>
+      <TeamScoreLine
+        team={game.teams.away}
+        game={game}
+        className={`row-start-1 ${showBases ? "col-span-3" : "col-span-full"}`}
+        onHomeRun={handleHomeRun}
+      />
+      <TeamScoreLine
+        team={game.teams.home}
+        game={game}
+        className={`row-start-2 ${showBases ? "col-span-3" : "col-span-full"}`}
+        onHomeRun={handleHomeRun}
+      />
+
+      {showBases && <Bases linescore={game.linescore} />}
     </div>
   );
 };
