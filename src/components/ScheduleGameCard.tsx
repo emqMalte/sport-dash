@@ -223,7 +223,7 @@ const TeamScoreLine = ({
       </div>
       <div
         className={twMerge(
-          "text-end font-mono",
+          "text-end font-mono text-sm",
           !showScore ? "col-span-2" : "",
         )}
       >
