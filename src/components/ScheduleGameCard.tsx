@@ -205,7 +205,7 @@ const TeamScoreLine = ({
   return (
     <div
       className={twMerge(
-        "grid grid-cols-3 items-center text-lg",
+        "grid grid-cols-[max-content_1fr_max-content] items-center gap-4 text-lg",
         isScoreChanged && !isHomeRun && "animate-team-score-flash", // Only flash if not home run
         className,
       )}
@@ -249,15 +249,13 @@ const TeamScoreLine = ({
 };
 
 const scheduleGameCardVariant = cva(
-  [
-    "relative w-2xs min-w-max rounded-sm border border-t-4 px-4 py-2 drop-shadow-sm",
-  ],
+  ["relative w-3xs rounded-sm border border-t-4 px-4 py-2 drop-shadow-sm"],
   {
     variants: {
       gameState: {
         default: ["bordert-t-slate-800 bg-slate-100"],
         pregame: ["border-t-blue-900", "bg-slate-50"],
-        inProgress: ["border-t-green-700 bg-white"],
+        inProgress: ["border-t-green-700 bg-white", "w-sm"],
         delayed: ["border-t-red-900", "bg-slate-300"],
         final: ["border-t-slate-800", "bg-slate-100"],
       },
