@@ -153,7 +153,7 @@ const AnimatedScore = ({
     <div className="relative">
       <span
         className={twMerge(
-          "inline-block font-extrabold transition-all",
+          "inline-block w-[2ch] font-extrabold transition-all",
           isAnimating &&
             (isHomeRun ? "animate-hr-text" : "animate-score-pulse"),
         )}
@@ -362,7 +362,7 @@ const ScheduleGameScoreLineVariants = cva(
   {
     variants: {
       showBases: {
-        true: "grid-cols-[max-content_max-content_1fr_1fr_1fr]",
+        true: "grid-cols-[max-content_max-content_max-content_1fr_1fr]",
       },
     },
   },
