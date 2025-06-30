@@ -7,7 +7,6 @@ interface TeamLogoProps {
   className?: string;
 }
 export const TeamLogo = ({ team, className }: TeamLogoProps) => {
-  console.log({ team });
   const teamShortName =
     teamMappings[team.team.name as keyof typeof teamMappings];
 
