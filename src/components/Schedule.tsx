@@ -81,8 +81,10 @@ export const Schedule = () => {
   });
 
   return (
-    <div className="my-6 rounded-3xl bg-white/20 py-4 drop-shadow-2xl backdrop-blur-sm">
-      <h1 className="my-4 text-center text-6xl font-bold">MLB Schedule</h1>
+    <div className="my-6 rounded-3xl border border-white/20 bg-white/10 py-4 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] backdrop-blur-md">
+      <h1 className="my-4 text-center text-6xl font-bold drop-shadow-lg">
+        MLB Schedule
+      </h1>
 
       {isLoading && <Loading />}
       {error && <Error error={error} />}
