@@ -11,7 +11,14 @@ import {
   showScores,
 } from "../utils/gameState";
 import { cva } from "class-variance-authority";
-import { useContext, useEffect, useRef, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import { SelectedGameContext } from "../contexts/selected-game-context/context";
 import { TeamLogo } from "./TeamLogo";
 import { TeamShortName } from "./TeamShortName";
@@ -21,22 +28,22 @@ import { Bases } from "./Bases";
 const useScoreChange = (currentScore: number, scoringPlays: ScoringPlay[]) => {
   const prevScoreRef = useRef(currentScore);
   const prevScoringPlaysRef = useRef(scoringPlays);
-  const [isScoreChanged, setIsScoreChanged] = useState(false);
-  const [isHomeRun, setIsHomeRun] = useState(false);
+  const [animationState, setAnimationState] = useState({
+    isScoreChanged: false,
+    isHomeRun: false,
+  });
 
   useEffect(() => {
     // Only trigger animation if score increased
     if (prevScoreRef.current < currentScore) {
       // const scoreIncrease = currentScore - prevScoreRef.current;
-      setIsScoreChanged(true);
-
-      if (prevScoringPlaysRef.current.at(-1)?.result.event === "Home Run") {
-        setIsHomeRun(true);
-      }
+      setAnimationState({
+        isScoreChanged: true,
+        isHomeRun: scoringPlays.at(-1)?.result.event === "Home Run",
+      });
 
       const timer = setTimeout(() => {
-        setIsScoreChanged(false);
-        setIsHomeRun(false);
+        setAnimationState({ isScoreChanged: false, isHomeRun: false });
       }, 3000);
 
       return () => clearTimeout(timer);
@@ -45,7 +52,7 @@ const useScoreChange = (currentScore: number, scoringPlays: ScoringPlay[]) => {
     prevScoringPlaysRef.current = scoringPlays;
   }, [currentScore, scoringPlays]);
 
-  return { isScoreChanged, isHomeRun };
+  return animationState;
 };
 
 // Home Run Particle component
@@ -324,15 +331,17 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
     outs.push(<FontAwesomeIcon key={i} icon={faCircle} />);
   }
 
-  const gameState = isFinal(game)
-    ? "final"
-    : isInProgress(game)
-      ? "inProgress"
-      : isDelayed(game)
-        ? "delayed"
-        : isPregame(game)
-          ? "pregame"
-          : "default";
+  const gameState = useMemo(() => {
+    return isFinal(game)
+      ? "final"
+      : isInProgress(game)
+        ? "inProgress"
+        : isDelayed(game)
+          ? "delayed"
+          : isPregame(game)
+            ? "pregame"
+            : "default";
+  }, [game]);
 
   const classes = twMerge(
     scheduleGameCardVariant({ gameState: gameState }),
@@ -340,7 +349,7 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
   );
 
   // Handle home run notification from TeamScoreLine
-  const handleHomeRun = (isHomeRun: boolean, teamId: number) => {
+  const handleHomeRun = useCallback((isHomeRun: boolean, teamId: number) => {
     if (isHomeRun) {
       setHomeRunInfo({ active: true, teamId });
 
@@ -351,7 +360,7 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
 
       return () => clearTimeout(timer);
     }
-  };
+  }, []);
 
   return (
     <div className={classes} onClick={onClick}>
