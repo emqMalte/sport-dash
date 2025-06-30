@@ -1,8 +1,6 @@
 import { Linescore } from "../types/mlb/Schedule";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle as faCircleSolid } from "@fortawesome/free-solid-svg-icons";
-import { faCircle } from "@fortawesome/free-regular-svg-icons";
 import { twMerge } from "tailwind-merge";
+import { FaCircleRegular, FaCircleSolid } from "./icons/FaCircle";
 
 const Base = ({
   isOnBase,
@@ -34,16 +32,10 @@ export const Bases = ({ linescore }: { linescore: Linescore }) => {
 
   for (let i = 0; i < 3; i++) {
     if (linescore?.outs && i < linescore.outs) {
-      outs.push(
-        <FontAwesomeIcon
-          key={i}
-          icon={faCircleSolid}
-          className="text-red-800 transition-colors duration-300"
-        />,
-      );
+      outs.push(<FaCircleSolid key={i} className="size-3 text-red-800" />);
       continue;
     }
-    outs.push(<FontAwesomeIcon key={i} icon={faCircle} />);
+    outs.push(<FaCircleRegular key={i} className="size-3 text-red-800" />);
   }
 
   return (
