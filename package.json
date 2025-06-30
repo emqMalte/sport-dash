@@ -14,16 +14,16 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@tanstack/react-query": "^5.69.0",
-    "@tanstack/react-query-devtools": "^5.69.0",
+    "@tanstack/react-query": "^5.71.1",
+    "@tanstack/react-query-devtools": "^5.71.1",
     "class-variance-authority": "^0.7.1",
     "nuqs": "^2.4.1",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250321.0",
+    "@cloudflare/workers-types": "^4.20250327.0",
     "@eslint/compat": "^1.2.7",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.23.0",
@@ -33,9 +33,9 @@
     "@typescript-eslint/eslint-plugin": "^8.28.0",
     "@typescript-eslint/parser": "^8.28.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "babel-plugin-react-compiler": "19.0.0-beta-aeaed83-20250323",
+    "babel-plugin-react-compiler": "19.0.0-beta-e993439-20250328",
     "eslint": "^9.23.0",
-    "eslint-plugin-react-compiler": "19.0.0-beta-aeaed83-20250323",
+    "eslint-plugin-react-compiler": "19.0.0-beta-e993439-20250328",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
@@ -44,6 +44,6 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4.0.17",
     "typescript": "^5.8.2",
-    "vite": "^6.2.3"
+    "vite": "^6.2.4"
   }
 }
