@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { SelectedGameContext } from "../contexts/SelectedGameContext";
+import { SelectedGameContext } from "../contexts/selected-game-context/context";
 import { TeamLogo } from "./TeamLogo";
 import { Away } from "../types/mlb/Schedule";
 import { Bases } from "./Bases";

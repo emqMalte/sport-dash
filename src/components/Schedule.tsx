@@ -9,7 +9,7 @@ import { isDelayed, isFinal, isInProgress } from "../utils/gameState";
 import { Loading } from "./Loading";
 import { Error } from "./Error";
 // import { HeroGame } from "./HeroGame";
-import { SelectedGameContextProvider } from "../contexts/SelectedGameContext";
+import { SelectedGameContextProvider } from "../contexts/selected-game-context/provider";
 
 const ScheduleDateSection = ({
   title,
