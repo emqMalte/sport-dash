@@ -20,6 +20,9 @@ export default defineConfig({
       files: [
         {
           outputMatch: /index-[a-zA-Z0-9-_]*.(css|js)$/,
+          attributes: {
+            crossorigin: "true",
+          },
         },
       ],
     }),
