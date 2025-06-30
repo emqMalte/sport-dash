@@ -56,7 +56,7 @@ const TeamScoreLine = ({
 };
 
 const scheduleGameCardVariant = cva(
-  ["m-2 rounded border border-t-4 px-4 py-2 drop-shadow"],
+  ["m-2 rounded-sm border border-t-4 px-4 py-2 drop-shadow-sm"],
   {
     variants: {
       gameState: {

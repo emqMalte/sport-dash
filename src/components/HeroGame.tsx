@@ -30,7 +30,7 @@ export const HeroGame = () => {
   const showBases = isInProgress(game);
 
   return (
-    <div className="mx-4 my-4 rounded border bg-white p-4">
+    <div className="mx-4 my-4 rounded-sm border bg-white p-4">
       <div className="flex items-center">
         <Team team={game.teams.away} />
         <div className="w-fit whitespace-nowrap text-center">
