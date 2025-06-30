@@ -29,6 +29,7 @@ export type Game = {
   teams: Teams;
   linescore: Linescore;
   venue: Venue;
+  scoringPlays: ScoringPlay[];
   content: Content;
   gameNumber: number;
   publicFacing: boolean;
@@ -189,3 +190,43 @@ export type Offense = {
   second?: Batter;
   third?: Batter;
 };
+
+export interface ScoringPlay {
+  result: Result;
+  about: About;
+  count: Count;
+  matchup: Matchup;
+  // pitchIndex:  any[];
+  // actionIndex: any[];
+  // runnerIndex: any[];
+  // runners:     any[];
+  // playEvents:  any[];
+}
+
+export interface About {
+  halfInning: string;
+  inning: number;
+}
+
+export interface Count {
+  balls: number;
+  strikes: number;
+  outs: number;
+}
+
+export interface Matchup {
+  batter: Batter;
+  pitcher: Batter;
+  // batterHotColdZones:  any[];
+  // pitcherHotColdZones: any[];
+  // splits:              Splits;
+}
+
+export interface Result {
+  type: string;
+  event: string;
+  description: string;
+  rbi: number;
+  awayScore: number;
+  homeScore: number;
+}
