@@ -166,11 +166,11 @@ export const Schedule = () => {
 
   const handleDateChange = (days: number) => {
     if (days === 0) {
-      setDate(new Date());
+      void setDate(new Date());
     } else {
       const newDate = new Date(date);
       newDate.setDate(newDate.getDate() + days);
-      setDate(newDate);
+      void setDate(newDate);
     }
   };
 
