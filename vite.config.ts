@@ -27,7 +27,6 @@ export default defineConfig({
       ],
     }),
     analyzer({
-      analyzerMode: "static",
       analyzerPort: "auto",
     }),
   ],
