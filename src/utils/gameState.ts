@@ -28,6 +28,10 @@ export function isDelayed(game: Game) {
   );
 }
 
+export function isSuspended(game: Game) {
+  return game.status.detailedState.toLowerCase().startsWith("suspended");
+}
+
 export function showScores(game: Game) {
   return isInProgress(game) || isFinal(game);
 }

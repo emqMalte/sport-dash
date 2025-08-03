@@ -50,6 +50,10 @@ export type Game = {
   ifNecessaryDescription: IfNecessaryDescription;
   rescheduleDate?: Date;
   rescheduleGameDate?: Date;
+  resumeDate?: string;
+  resumeGameDate?: string;
+  resumedFrom?: string;
+  resumedFromDate?: string;
   description?: string;
 };
 

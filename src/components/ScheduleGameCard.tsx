@@ -5,6 +5,7 @@ import {
   isFinal,
   isInProgress,
   isPregame,
+  isSuspended,
   showScores,
 } from "../utils/gameState";
 import { cva } from "class-variance-authority";
@@ -258,6 +259,7 @@ const scheduleGameCardVariant = cva(
         inProgress: ["border-t-green-700 bg-white", "w-sm"],
         delayed: ["border-t-red-900", "bg-slate-300"],
         final: ["border-t-slate-800", "bg-slate-100"],
+        suspended: ["border-t-orange-600", "bg-slate-300"],
       },
     },
     defaultVariants: {
@@ -294,13 +296,15 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
         ? "inProgress"
         : isDelayed(game)
           ? "delayed"
-          : isPregame(game)
-            ? "pregame"
-            : "default";
+          : isSuspended(game)
+            ? "suspended"
+            : isPregame(game)
+              ? "pregame"
+              : "default";
   }, [game]);
 
   const classes = twMerge(
-    scheduleGameCardVariant({ gameState: gameState }),
+    scheduleGameCardVariant({ gameState }),
     homeRunInfo.active && "animate-hr-card-shake",
   );
 
@@ -341,10 +345,36 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
           <div className="font-bold italic underline">
             {game.status.detailedState}
           </div>
+        ) : isSuspended(game) ? (
+          <div>
+            {game.resumeDate && (
+              <>
+                <span className="font-bold italic underline">
+                  {game.status.detailedState}
+                </span>
+                <br />
+                <span className="text-sm">
+                  <span className="font-semibold">Resumes:</span>{" "}
+                  {new Date(game.resumeDate).toLocaleString()}
+                </span>
+              </>
+            )}
+            {game.resumedFrom && (
+              <>
+                <span className="font-semibold">Resumes:</span>{" "}
+                {new Date(game.gameDate).toLocaleTimeString()}
+                <br />
+                <span className="text-sm">
+                  <span className="font-semibold">Started:</span>{" "}
+                  {new Date(game.resumedFrom).toLocaleString()}
+                </span>
+              </>
+            )}
+          </div>
         ) : (
           <>
             <span className="font-semibold">Time:</span>{" "}
-            {new Date(game.gameDate).toLocaleTimeString()}{" "}
+            {new Date(game.gameDate).toLocaleTimeString()}
           </>
         )}
       </div>
