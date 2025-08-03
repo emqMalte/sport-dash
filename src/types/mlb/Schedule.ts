@@ -8,7 +8,7 @@ export type Schedule = {
 };
 
 export type DateElement = {
-  date: Date;
+  date: string;
   totalItems: number;
   totalEvents: number;
   totalGames: number;
@@ -23,8 +23,8 @@ export type Game = {
   link: string;
   gameType: GameType;
   season: string;
-  gameDate: Date;
-  officialDate: Date;
+  gameDate: string;
+  officialDate: string;
   status: Status;
   teams: Teams;
   linescore: Linescore;
@@ -48,8 +48,8 @@ export type Game = {
   recordSource: RecordSource;
   ifNecessary: DoubleHeader;
   ifNecessaryDescription: IfNecessaryDescription;
-  rescheduleDate?: Date;
-  rescheduleGameDate?: Date;
+  rescheduleDate?: string;
+  rescheduleGameDate?: string;
   resumeDate?: string;
   resumeGameDate?: string;
   resumedFrom?: string;
