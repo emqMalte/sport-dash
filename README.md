@@ -40,6 +40,8 @@ A modern, real-time(ish) MLB schedule dashboard that displays daily game schedul
 - **Data Source**: Official MLB Stats API
 - **Deployment**: Cloudflare Pages
 
+<img width="1554" height="1151" alt="Screenshot" src="https://github.com/user-attachments/assets/4d2817ea-3957-4fd3-b289-6d251fa0605f" />
+
 ## Getting Started
 
 ### Prerequisites
