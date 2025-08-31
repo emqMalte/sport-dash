@@ -19,7 +19,7 @@ importers:
         version: 0.7.1
       nuqs:
         specifier: ^2.4.3
-        version: 2.5.1(react@19.1.1)
+        version: 2.5.2(react@19.1.1)
       react:
         specifier: 19.1.1
         version: 19.1.1
@@ -1560,8 +1560,8 @@ packages:
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
 
-  nuqs@2.5.1:
-    resolution: {integrity: sha512-YvAyI01gaEfS6U2iTcfffKccGkqYRnGmLoCHvDjK4ShgtB0tKmYgC7+ez9PmdaiDmrLR+y1qHzfQC66T0VFwWQ==}
+  nuqs@2.5.2:
+    resolution: {integrity: sha512-vzKeoYlMRmNYPWECdn53Nmh/jM+r/iSezEin342EVXPogT6KzALwdnYbZxASE5vTdXRUtOymtPkgsarLipKetg==}
     peerDependencies:
       '@remix-run/react': '>=2'
       '@tanstack/react-router': ^1
@@ -3671,7 +3671,7 @@ snapshots:
 
   node-releases@2.0.19: {}
 
-  nuqs@2.5.1(react@19.1.1):
+  nuqs@2.5.2(react@19.1.1):
     dependencies:
       '@standard-schema/spec': 1.0.0
       react: 19.1.1
