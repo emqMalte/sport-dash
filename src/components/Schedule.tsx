@@ -36,20 +36,72 @@ const ScheduleDateSection = ({
   );
 };
 
-const ScheduleDate = ({
-  date,
-  onDateChange,
-  currentDate,
-}: {
-  date: DateElement;
-  onDateChange: (days: number) => void;
-  currentDate: Date;
-}) => {
+const DateNavigation = () => {
+  const [date, setDate] = useDateParam();
+
+  const isToday = date.toDateString() === new Date().toDateString();
+
+  const handleDateChange = (days: number) => {
+    if (days === 0) {
+      void setDate(new Date());
+    } else {
+      const newDate = new Date(date);
+      newDate.setDate(newDate.getDate() + days);
+      void setDate(newDate);
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-center gap-4">
+      <DateNavigationButton
+        direction="prev"
+        onClick={() => handleDateChange(-1)}
+      />
+      <h2 className="my-3 text-center text-2xl font-bold">
+        {date.toLocaleDateString(undefined, {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      </h2>
+      <DateNavigationButton
+        direction="next"
+        onClick={() => handleDateChange(1)}
+      />
+      {!isToday && (
+        <button
+          onClick={() => handleDateChange(0)}
+          className="flex items-center gap-1 rounded-full bg-white/20 px-4 py-2 text-sm hover:bg-white/30"
+          aria-label="Jump to today"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-4 rotate-90"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3"
+            />
+          </svg>
+          Today
+        </button>
+      )}
+    </div>
+  );
+};
+
+const ScheduleDate = ({ dateElement }: { dateElement: DateElement }) => {
   const scheduledGames: Game[] = [];
   const activeGames: Game[] = [];
   const completedGames: Game[] = [];
 
-  date.games.forEach((game) => {
+  dateElement.games.forEach((game) => {
     if (isFinal(game)) {
       completedGames.push(game);
     } else if (isInProgress(game)) {
@@ -59,52 +111,8 @@ const ScheduleDate = ({
     }
   });
 
-  const isToday =
-    new Date(date.date).toDateString() === currentDate.toDateString();
-
   return (
-    <div key={date.date.toString()}>
-      <div className="flex items-center justify-center gap-4">
-        <DateNavigationButton
-          direction="prev"
-          onClick={() => onDateChange(-1)}
-        />
-        <h2 className="my-3 text-center text-2xl font-bold">
-          {new Date(date.date).toLocaleDateString(undefined, {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </h2>
-        <DateNavigationButton
-          direction="next"
-          onClick={() => onDateChange(1)}
-        />
-        {!isToday && (
-          <button
-            onClick={() => onDateChange(0)}
-            className="flex items-center gap-1 rounded-full bg-white/20 px-4 py-2 text-sm hover:bg-white/30"
-            aria-label="Jump to today"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-4 rotate-90"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3"
-              />
-            </svg>
-            Today
-          </button>
-        )}
-      </div>
+    <div key={dateElement.date.toString()}>
       <p className="text-center">
         All times are in your local timezone (
         {Intl.DateTimeFormat().resolvedOptions().timeZone})
@@ -154,7 +162,7 @@ const DateNavigationButton = ({
 
 export const Schedule = () => {
   const [timezone] = useLocalTimezone();
-  const [date, setDate] = useDateParam();
+  const [date] = useDateParam();
 
   const queryUrl = new URL("https://statsapi.mlb.com/api/v1/schedule");
 
@@ -163,16 +171,6 @@ export const Schedule = () => {
   queryUrl.searchParams.set("timeZone", timezone);
   queryUrl.searchParams.set("startDate", date.toISOString().split("T")[0]);
   queryUrl.searchParams.set("endDate", date.toISOString().split("T")[0]);
-
-  const handleDateChange = (days: number) => {
-    if (days === 0) {
-      void setDate(new Date());
-    } else {
-      const newDate = new Date(date);
-      newDate.setDate(newDate.getDate() + days);
-      void setDate(newDate);
-    }
-  };
 
   const { isLoading, error, data } = useQuery<MlbSchedule>({
     queryKey: ["schedule", date.toISOString().split("T")[0]],
@@ -188,18 +186,20 @@ export const Schedule = () => {
         MLB Schedule
       </h1>
 
+      <DateNavigation />
+
       {isLoading && <Loading />}
       {error && <Error error={error} />}
 
       <SelectedGameContextProvider>
         {data?.dates.map((date) => (
-          <ScheduleDate
-            key={date.date.toString()}
-            date={date}
-            onDateChange={handleDateChange}
-            currentDate={new Date()}
-          />
+          <ScheduleDate key={date.date.toString()} dateElement={date} />
         ))}
+        {data?.dates.length === 0 && (
+          <div className="my-6 text-center text-xl">
+            There are no games scheduled for this date.
+          </div>
+        )}
       </SelectedGameContextProvider>
     </div>
   );
