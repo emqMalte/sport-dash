@@ -169,8 +169,14 @@ export const Schedule = () => {
   queryUrl.searchParams.set("sportId", "1");
   queryUrl.searchParams.set("hydrate", "linescore,scoringplays");
   queryUrl.searchParams.set("timeZone", timezone);
-  queryUrl.searchParams.set("startDate", date.toISOString().split("T")[0]);
-  queryUrl.searchParams.set("endDate", date.toISOString().split("T")[0]);
+  queryUrl.searchParams.set(
+    "startDate",
+    date.toLocaleDateString("sv").split("T")[0],
+  );
+  queryUrl.searchParams.set(
+    "endDate",
+    date.toLocaleDateString("sv").split("T")[0],
+  );
 
   const { isLoading, error, data } = useQuery<MlbSchedule>({
     queryKey: ["schedule", date.toISOString().split("T")[0]],
