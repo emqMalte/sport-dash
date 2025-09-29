@@ -63,7 +63,7 @@ export type Content = {
 
 export type DayNight = "day" | "night";
 
-export type DoubleHeader = "N";
+export type DoubleHeader = "N" | "Y";
 
 export type GameType = "R";
 
@@ -73,7 +73,12 @@ export type IfNecessaryDescription = "Normal Game";
 
 export type RecordSource = "S" | "P" | "D" | "I";
 
-export type SeriesDescription = "Regular Season";
+export type SeriesDescription =
+  | "Regular Season"
+  | "Division Series"
+  | "Championship Series"
+  | "World Series"
+  | "Wild Card";
 
 export type Status = {
   abstractGameState: AbstractGameState;

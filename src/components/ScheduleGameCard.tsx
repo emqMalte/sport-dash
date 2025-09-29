@@ -331,6 +331,16 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
       />
 
       <div className="text-center">
+        {game.seriesDescription !== "Regular Season" && (
+          <div
+            className={twMerge(
+              "absolute top-0 left-1/2 -translate-x-1/2 -translate-y-3/4 rounded-full border-2 border-red-800 bg-white px-2 py-0.5 text-xs font-semibold whitespace-nowrap",
+            )}
+          >
+            {game.seriesDescription} - Game {game.seriesGameNumber}
+            {game.ifNecessary !== "N" && <dfn title="If Necessary">*</dfn>}
+          </div>
+        )}
         {showBases ? (
           <span>
             <span className="font-semibold">{game.linescore.inningState}</span>{" "}
