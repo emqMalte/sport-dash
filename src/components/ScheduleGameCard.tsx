@@ -254,7 +254,7 @@ const scheduleGameCardVariant = cva(
   {
     variants: {
       gameState: {
-        default: ["bordert-t-slate-800 bg-slate-100"],
+        default: ["border-t-slate-800 bg-slate-100"],
         pregame: ["border-t-blue-900", "bg-slate-50"],
         inProgress: ["border-t-green-700 bg-white", "w-sm"],
         delayed: ["border-t-red-900", "bg-slate-300"],
