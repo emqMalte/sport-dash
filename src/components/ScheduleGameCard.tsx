@@ -250,7 +250,7 @@ const TeamScoreLine = ({
 };
 
 const scheduleGameCardVariant = cva(
-  ["relative w-3xs rounded-sm border border-t-4 px-4 py-2 drop-shadow-sm"],
+  ["relative w-3xs rounded-sm border border-t-4 px-4 py-2"],
   {
     variants: {
       gameState: {
@@ -303,8 +303,10 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
               : "default";
   }, [game]);
 
+  const baseCardClasses = scheduleGameCardVariant({ gameState });
+
   const classes = twMerge(
-    scheduleGameCardVariant({ gameState }),
+    baseCardClasses,
     homeRunInfo.active && "animate-hr-card-shake",
   );
 
@@ -322,77 +324,82 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
     }
   }, []);
 
-  return (
-    <div className={classes} onClick={onClick}>
-      {/* Full card home run animation overlay */}
-      <FullCardHomeRunAnimation
-        teamId={homeRunInfo.teamId}
-        isVisible={homeRunInfo.active}
-      />
-
-      <div className="text-center">
-        {game.seriesDescription !== "Regular Season" && (
-          <div
-            className={twMerge(
-              "absolute top-0 left-1/2 -translate-x-1/2 -translate-y-3/4 rounded-full border-2 border-red-800 bg-white px-2 py-0.5 text-xs font-semibold whitespace-nowrap",
-            )}
-          >
-            {game.seriesDescription} - Game {game.seriesGameNumber}
-            {game.ifNecessary !== "N" && <dfn title="If Necessary">*</dfn>}
-          </div>
-        )}
-        {showBases ? (
-          <span>
-            <span className="font-semibold">{game.linescore.inningState}</span>{" "}
-            of the{" "}
-            <span className="font-semibold">
-              {game.linescore.currentInningOrdinal}
-            </span>
-          </span>
-        ) : showScore ? (
-          <span className="font-semibold">{game.status.detailedState}</span>
-        ) : isDelayed(game) ? (
-          <div className="font-bold italic underline">
-            {game.status.detailedState}
-          </div>
-        ) : isSuspended(game) ? (
-          <div>
-            {game.resumeDate && (
-              <>
-                <span className="font-bold italic underline">
-                  {game.status.detailedState}
-                </span>
-                <br />
-                <span className="text-sm">
-                  <span className="font-semibold">Resumes:</span>{" "}
-                  {new Date(game.resumeDate).toLocaleString()}
-                </span>
-              </>
-            )}
-            {game.resumedFrom && (
-              <>
-                <span className="font-semibold">Resumes:</span>{" "}
-                {new Date(game.gameDate).toLocaleTimeString()}
-                <br />
-                <span className="text-sm">
-                  <span className="font-semibold">Started:</span>{" "}
-                  {new Date(game.resumedFrom).toLocaleString()}
-                </span>
-              </>
-            )}
-          </div>
-        ) : (
-          <>
-            <span className="font-semibold">Time:</span>{" "}
-            {new Date(game.gameDate).toLocaleTimeString()}
-          </>
-        )}
+  const seriesBadge =
+    game.seriesDescription !== "Regular Season" ? (
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-red-800 bg-white px-2 py-0.5 text-xs font-semibold whitespace-nowrap">
+        {game.seriesDescription} - Game {game.seriesGameNumber}
+        {game.ifNecessary !== "N" && <dfn title="If Necessary">*</dfn>}
       </div>
-      <ScheduleGameScoreLine
-        game={game}
-        showBases={showBases}
-        handleHomeRun={handleHomeRun}
-      />
+    ) : null;
+
+  return (
+    <div className="relative">
+      <div className="drop-shadow-sm">
+        <div className={classes} onClick={onClick}>
+          {/* Full card home run animation overlay */}
+          <FullCardHomeRunAnimation
+            teamId={homeRunInfo.teamId}
+            isVisible={homeRunInfo.active}
+          />
+
+          <div className="text-center">
+            {showBases ? (
+              <span>
+                <span className="font-semibold">
+                  {game.linescore.inningState}
+                </span>{" "}
+                of the{" "}
+                <span className="font-semibold">
+                  {game.linescore.currentInningOrdinal}
+                </span>
+              </span>
+            ) : showScore ? (
+              <span className="font-semibold">{game.status.detailedState}</span>
+            ) : isDelayed(game) ? (
+              <div className="font-bold italic underline">
+                {game.status.detailedState}
+              </div>
+            ) : isSuspended(game) ? (
+              <div>
+                {game.resumeDate && (
+                  <>
+                    <span className="font-bold italic underline">
+                      {game.status.detailedState}
+                    </span>
+                    <br />
+                    <span className="text-sm">
+                      <span className="font-semibold">Resumes:</span>{" "}
+                      {new Date(game.resumeDate).toLocaleString()}
+                    </span>
+                  </>
+                )}
+                {game.resumedFrom && (
+                  <>
+                    <span className="font-semibold">Resumes:</span>{" "}
+                    {new Date(game.gameDate).toLocaleTimeString()}
+                    <br />
+                    <span className="text-sm">
+                      <span className="font-semibold">Started:</span>{" "}
+                      {new Date(game.resumedFrom).toLocaleString()}
+                    </span>
+                  </>
+                )}
+              </div>
+            ) : (
+              <>
+                <span className="font-semibold">Time:</span>{" "}
+                {new Date(game.gameDate).toLocaleTimeString()}
+              </>
+            )}
+          </div>
+          <ScheduleGameScoreLine
+            game={game}
+            showBases={showBases}
+            handleHomeRun={handleHomeRun}
+          />
+        </div>
+      </div>
+      {seriesBadge}
     </div>
   );
 };
