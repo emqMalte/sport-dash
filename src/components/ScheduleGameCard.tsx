@@ -376,7 +376,10 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
                 {game.resumedFrom && (
                   <>
                     <span className="font-semibold">Resumes:</span>{" "}
-                    {new Date(game.gameDate).toLocaleTimeString()}
+                    {new Date(game.gameDate).toLocaleTimeString([], {
+                      hour: "numeric",
+                      minute: "numeric",
+                    })}
                     <br />
                     <span className="text-sm">
                       <span className="font-semibold">Started:</span>{" "}
@@ -388,7 +391,10 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
             ) : (
               <>
                 <span className="font-semibold">Time:</span>{" "}
-                {new Date(game.gameDate).toLocaleTimeString()}
+                {new Date(game.gameDate).toLocaleTimeString([], {
+                  hour: "numeric",
+                  minute: "numeric",
+                })}
               </>
             )}
           </div>
