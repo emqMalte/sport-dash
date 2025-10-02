@@ -14,7 +14,9 @@ export default defineConfig(
   react.configs.flat.recommended,
   react.configs.flat["jsx-runtime"],
   reactCompiler.configs.recommended,
-  reactHooks.configs["recommended-latest"],
+  // @ts-expect-error configs is not typed https://github.com/facebook/react/issues/34679
+  // eslint-disable-next-line
+  reactHooks.configs["flat/recommended"],
   reactRefresh.configs.recommended,
   reactRefresh.configs.vite,
   {
