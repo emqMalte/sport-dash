@@ -391,10 +391,12 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
             ) : (
               <>
                 <span className="font-semibold">Time:</span>{" "}
-                {new Date(game.gameDate).toLocaleTimeString([], {
-                  hour: "numeric",
-                  minute: "numeric",
-                })}
+                {game.status.startTimeTBD
+                  ? "TBD"
+                  : new Date(game.gameDate).toLocaleTimeString([], {
+                      hour: "numeric",
+                      minute: "numeric",
+                    })}
               </>
             )}
           </div>
