@@ -326,7 +326,7 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
 
   const seriesBadge =
     game.seriesDescription !== "Regular Season" ? (
-      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-red-800 bg-white px-2 py-0.5 text-xs font-semibold whitespace-nowrap">
+      <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-red-800 bg-white px-2 py-0.5 text-xs font-semibold whitespace-nowrap drop-shadow-sm">
         {game.seriesDescription} - Game {game.seriesGameNumber}
         {game.ifNecessary !== "N" && <dfn title="If Necessary">*</dfn>}
       </div>
@@ -334,7 +334,7 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
 
   return (
     <div className="relative">
-      <div className="drop-shadow-sm">
+      <div className="drop-shadow-md">
         <div className={classes} onClick={onClick}>
           {/* Full card home run animation overlay */}
           <FullCardHomeRunAnimation
