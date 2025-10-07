@@ -11,7 +11,7 @@ import { Error } from "./Error";
 // import { HeroGame } from "./HeroGame";
 import { SelectedGameContextProvider } from "../contexts/selected-game-context/provider";
 import { useLocalTimezone } from "../hooks/use-local-timezone";
-import { useDateParam } from "../hooks/use-date-param";
+import { splitDate, useDateParam } from "../hooks/use-date-param";
 
 const ScheduleDateSection = ({
   title,
@@ -169,17 +169,11 @@ export const Schedule = () => {
   queryUrl.searchParams.set("sportId", "1");
   queryUrl.searchParams.set("hydrate", "linescore,seriesStatus,scoringplays");
   queryUrl.searchParams.set("timeZone", timezone);
-  queryUrl.searchParams.set(
-    "startDate",
-    date.toLocaleDateString("sv").split("T")[0],
-  );
-  queryUrl.searchParams.set(
-    "endDate",
-    date.toLocaleDateString("sv").split("T")[0],
-  );
+  queryUrl.searchParams.set("startDate", splitDate(date));
+  queryUrl.searchParams.set("endDate", splitDate(date));
 
   const { isLoading, error, data } = useQuery<MlbSchedule>({
-    queryKey: ["schedule", date.toISOString().split("T")[0]],
+    queryKey: ["schedule", date],
     queryFn: () => fetch(queryUrl).then((res) => res.json()),
     staleTime: 1000 * 30,
     refetchInterval: 1000 * 30,
