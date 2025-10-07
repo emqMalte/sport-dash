@@ -31,6 +31,7 @@ export type Game = {
   venue: Venue;
   scoringPlays: ScoringPlay[];
   content: Content;
+  seriesStatus: SeriesStatus;
   gameNumber: number;
   publicFacing: boolean;
   doubleHeader: DoubleHeader;
@@ -79,6 +80,46 @@ export type SeriesDescription =
   | "Championship Series"
   | "World Series"
   | "Wild Card";
+
+export interface SeriesStatus {
+  gameNumber: number;
+  totalGames: number;
+  isTied: boolean;
+  isOver: boolean;
+  wins: number;
+  losses: number;
+  winningTeam?: IngTeam;
+  losingTeam?: IngTeam;
+  description: SeriesStatusDescription;
+  shortDescription: string;
+  result: string;
+  shortName: ShortNameEnum;
+  abbreviation: ShortNameEnum;
+}
+
+export type ShortNameEnum =
+  | "NLDS"
+  | "ALDS"
+  | "NLCS"
+  | "ALCS"
+  | "WS"
+  | (string & {});
+
+export type SeriesStatusDescription =
+  | "NL Division Series"
+  | "AL Division Series"
+  | "NL Championship Series"
+  | "AL Championship Series"
+  | "World Series"
+  | (string & {});
+
+export interface IngTeam {
+  springLeague: Venue;
+  allStarStatus: DoubleHeader;
+  id: number;
+  name: string;
+  link: string;
+}
 
 export type Status = {
   abstractGameState: AbstractGameState;
