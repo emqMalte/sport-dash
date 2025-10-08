@@ -77,9 +77,10 @@ export type RecordSource = "S" | "P" | "D" | "I";
 export type SeriesDescription =
   | "Regular Season"
   | "Division Series"
-  | "Championship Series"
+  | "League Championship Series"
   | "World Series"
-  | "Wild Card";
+  | "Wild Card"
+  | (string & {});
 
 export interface SeriesStatus {
   gameNumber: number;
@@ -92,7 +93,7 @@ export interface SeriesStatus {
   losingTeam?: IngTeam;
   description: SeriesStatusDescription;
   shortDescription: string;
-  result: string;
+  result?: string;
   shortName: ShortNameEnum;
   abbreviation: ShortNameEnum;
 }
