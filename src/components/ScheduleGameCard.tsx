@@ -355,7 +355,13 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
                 </span>
               </span>
             ) : showScore ? (
-              <span className="font-semibold">{game.status.detailedState}</span>
+              <span className="font-semibold">
+                {game.status.detailedState}
+                {["Final", "Game Over"].includes(game.status.detailedState) &&
+                  game.linescore.currentInning !== game.scheduledInnings && (
+                    <>/{game.linescore.currentInning}</>
+                  )}
+              </span>
             ) : isDelayed(game) ? (
               <div className="font-bold italic underline">
                 {game.status.detailedState}
