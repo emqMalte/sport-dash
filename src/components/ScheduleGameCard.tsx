@@ -325,7 +325,7 @@ export const ScheduleGameCard = ({ game }: ScheduleGameCardProps) => {
   }, []);
 
   const seriesBadge =
-    game.seriesDescription !== "Regular Season" ? (
+    game.seriesDescription !== "Regular Season" && game.seriesStatus ? (
       <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-red-800 bg-white px-2 py-0.5 text-xs font-semibold whitespace-nowrap drop-shadow-sm">
         {game.seriesStatus.shortDescription}
         {game.ifNecessary !== "N" && <dfn title="If Necessary">*</dfn>}

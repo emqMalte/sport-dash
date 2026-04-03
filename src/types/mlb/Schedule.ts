@@ -31,7 +31,7 @@ export type Game = {
   venue: Venue;
   scoringPlays: ScoringPlay[];
   content: Content;
-  seriesStatus: SeriesStatus;
+  seriesStatus?: SeriesStatus;
   gameNumber: number;
   publicFacing: boolean;
   doubleHeader: DoubleHeader;
